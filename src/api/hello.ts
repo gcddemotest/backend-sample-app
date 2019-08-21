@@ -9,7 +9,7 @@ export class Hello {
     private readonly service: Service,
   ) { }
 
-  @route(HttpMethod.GET, "/users/:userId")
+  @route(HttpMethod.GET, "/")
   public async health(exchange: Exchange) {
     exchange.response.code(200).send(`backend-sample-app - ${hostname}`);
   }
