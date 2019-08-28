@@ -16,16 +16,24 @@ export class Hello {
 
   @route(HttpMethod.GET, "/users/:userId")
   public async user(exchange: Exchange) {
-    const user = await this.service.queryOne(exchange.request.params.userId);
-    if (user) {
-      exchange.response.send(user);
-    } else {
-      exchange.response.code(404).send();
+    try {
+      const user = await this.service.queryOne(exchange.request.params.userId);
+      if (user) {
+        exchange.response.send(user);
+      } else {
+        exchange.response.code(404).send();
+      }
+    } catch (err) {
+      exchange.response.code(500).send(err);
     }
   }
 
   @route(HttpMethod.GET, "/users")
   public async users(exchange: Exchange) {
-    exchange.response.send(await this.service.queryAll());
+    try {
+      exchange.response.send(await this.service.queryAll());
+    } catch (err) {
+      exchange.response.code(500).send(err);
+    }
   }
 }

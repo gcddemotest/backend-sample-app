@@ -1,6 +1,7 @@
 
 import { Container, HttpServer, injectable } from "@msiviero/knit";
 import { Hello } from "./api/hello";
+import { DbConnectionProvider } from "./provider/db-connection-provider";
 
 @injectable()
 class Application {
@@ -9,6 +10,7 @@ class Application {
     HttpServer
       .getInstance()
       .api(Hello)
+      .registerProvider(DbConnectionProvider)
       .start({ port: this.getPort() });
   }
 

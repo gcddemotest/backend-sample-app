@@ -1,5 +1,5 @@
-import { injectable } from "@msiviero/knit";
-import { ConnectionProvider } from "../provider/db.connection-provider";
+import { inject, injectable } from "@msiviero/knit";
+import { Pool } from "mysql";
 
 interface User {
   readonly id: string;
@@ -11,16 +11,15 @@ interface User {
 export class Service {
 
   constructor(
-    private readonly connectionProvider: ConnectionProvider,
+    @inject("db:connection") public readonly connectionPool: Pool,
   ) { }
 
   public queryAll(): Promise<User[]> {
     return new Promise((resolve, reject) => {
-      this.connectionProvider.connection().query("SELECT * FROM user LIMIT 20", (error, results) => {
+      this.connectionPool.query("SELECT * FROM user LIMIT 20", (error, results) => {
         if (error) {
           return reject(error);
         }
-
         resolve(results);
       });
     });
@@ -28,7 +27,7 @@ export class Service {
 
   public queryOne(userId: number): Promise<User | undefined> {
     return new Promise((resolve, reject) => {
-      this.connectionProvider.connection().query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
+      this.connectionPool.query("SELECT * FROM user WHERE id = ?", [userId], (error, results) => {
         if (error) {
           return reject(error);
         }
