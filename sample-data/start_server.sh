@@ -5,3 +5,4 @@ docker run --name sample-mysql -v ${PWD}:/data  -e MYSQL_ROOT_PASSWORD=password 
 # create database mydb
 # use mydb
 # source /data/user.sql
+# PORT=8081 DB_HOST=127.0.0.1 DB_USER=root DB_PASSWORD=password DB_DATABASE=mydb node dist/main.js
